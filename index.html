@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cupcake>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR to NFC Writer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <script>
+    tailwind.config = {
+      plugins: [daisyui],
+      daisyui: {
+        themes: ["light", "dark", "cupcake", "corporate"],
+      },
+    };
+  </script>
+  <style>
+    .pulse-red {
+      animation: pulse 1s infinite;
+      background-color: hsl(var(--er)); /* Using DaisyUI error color variable */
+    }
+
+    @keyframes pulse {
+      0% { background-color: hsl(var(--er)); }
+      50% { background-color: hsl(var(--a)); }
+      100% { background-color: hsl(var(--er)); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <div class="navbar bg-base-200 shadow-lg px-4">
+    <div class="navbar-start">
+      <a class="btn btn-ghost normal-case text-xl">WebQR2NFC</a>
+    </div>
+    <div class="navbar-end">
+      <select id="themeSelector" class="select select-bordered select-sm">
+        <option value="cupcake">Cupcake</option>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="corporate">Corporate</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center justify-center p-4 gap-4">
+    <!-- Status Section -->
+    <div class="alert alert-primary shadow-lg w-full max-w-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span id="status" class="font-semibold">Initializing scanner...</span>
+    </div>
+
+    <label class="input w-full max-w-md">
+      <i class="fa-solid fa-link"></i>
+      <input type="text" class="grow w-full" placeholder="QR" id="qr-content" disabled />
+      <span class="btn btn-neutral btn-xs" onclick="navigator.clipboard.writeText(document.getElementById('qr-content').value).then(() => showToast('Copied to clipboard!')).catch(err => console.error('Failed to copy:', err));">Copy</span>
+    </label>
+    <!-- Scanner Area -->
+    <div class="w-full max-w-md space-y-4">
+      <div id="scanner" class="rounded-box overflow-hidden shadow-lg w-full aspect-square"></div>
+      
+      <div id="qr-preview" class="text-center text-sm opacity-50"></div>
+    </div>
+    <div class="join">
+      <input class="input join-item input-sm" value="Cards Scanned: " disabled />
+      <span id="counter" class="h-full my-auto mx-3" ></span>
+      <button id="resetBtn" class="btn join-item btn-red-600 btn-sm p-3">Reset</button>
+    </div>
+
+    <!-- Scan History -->
+    <div class="card w-full max-w-md bg-base-200 shadow-lg">
+      <div class="card-body p-4">
+        <h2 class="card-title mb-2">Scan History</h2>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra table-sm">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody" class="text-xs">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-[15%] left-auto w-full max-w-md bg-sky-700 text-white py-2 px-4 rounded shadow-lg opacity-0 transition-opacity duration-300"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer sm:footer-horizontal footer-center bg-base-300 text-base-content p-4">
+    <aside>
+      <p>Copyright © <span id="currentYear"></span> WebQR2NFC. By <a href="https://shawon.me" class="link link-hover">Sharfuddin Shawon</a></p>
+      <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+      </script>
+    </aside>
+  </footer>
+
+
+  <!-- Audio Elements -->
+  <audio id="wait-sound" src="/asset/waiting.mp3" loop></audio>
+  <audio id="nfc-sound" src="/asset/success.mp3"></audio>
+  <script src="/asset/qr2nfc.js"></script>
+  <script src="/asset/html5-qrcode.min.js"></script>
+  <script>
+    // Modularized JavaScript Code
+
+    // Theme Management
+    function initializeThemeSelector() {
+      const themeSelector = document.getElementById('themeSelector');
+      const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeSelector.value = savedTheme;
+
+      themeSelector.addEventListener('change', (e) => {
+        const selectedTheme = e.target.value;
+        document.documentElement.setAttribute('data-theme', selectedTheme);
+        localStorage.setItem('selectedTheme', selectedTheme);
+      });
+    }
+
+
+  </script>
+</body>
+</html>

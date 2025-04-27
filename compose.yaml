@@ -1,0 +1,8 @@
+services:
+  webqr2nfc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: webqr2nfc
+    ports:
+      - "8080:80"
