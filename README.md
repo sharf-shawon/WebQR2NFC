@@ -10,6 +10,13 @@ The QR to NFC Writer is a single html page that application allows users to scan
 - **Scan History**: Maintains a history of scanned QR codes, saved to local storage.
 - **Theme Selector**: Allows users to switch between light and dark themes.
 
+
+
+## Preview
+![Application Mockup](asset/WebQR2NFC-Mockup.png)
+iPhone Mockup here is Ironic, given *WebNFC API is not yet supported in iOS*.
+
+
 ## How It Works
 1. **QR Code Scanning**:
    - The application uses the `Html5Qrcode` library to scan QR codes via the device's camera.
@@ -74,12 +81,6 @@ Alternatively, you can use Docker Compose for setup:
 2. **Access the Application**:
    Open your browser and navigate to `http://localhost:8080`.
 
-## File Structure
-- `index.html`: The main HTML file for the application.
-- `asset/qr2nfc.js`: Contains the JavaScript logic for QR scanning, NFC writing, and permission management.
-- `asset/html5-qrcode.min.js`: Library for QR code scanning.
-- `asset/success.mp3`: Audio file played on successful NFC writing.
-- `asset/waiting.mp3`: Audio file played while waiting for NFC interaction.
 
 ## Limitations
 - The Web NFC API is not supported on all devices and browsers. NFC supported Android phone is required, as iOS devices don't support Web NFC API.
